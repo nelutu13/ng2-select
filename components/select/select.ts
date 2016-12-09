@@ -166,7 +166,7 @@ let optionsTemplate = `
     <div [ngClass]="{'ui-disabled': disabled}"></div>
     <div class="ui-select-match"
         [ngClass]="inputClass"
-        *ngIf="!inputMode">
+        *ngIf="!showSearchInput()">
       <span tabindex="-1"
           class="ui-select-toggle"
           [ngClass]="buttonClass"
@@ -190,7 +190,7 @@ let optionsTemplate = `
            [disabled]="disabled"
            class="ui-select-search"
            [ngClass]="inputClass"
-           *ngIf="inputMode"
+           *ngIf="showSearchInput()"
            placeholder="{{active.length <= 0 ? placeholder : ''}}">
      ${optionsTemplate}
   </div>
@@ -246,6 +246,7 @@ export class SelectComponent implements OnInit {
   @Input() public iconPositionClass:string = 'pull-right';
   @Input() public placeholderTextClass:string = 'text-muted';
   @Input() public activeTextPositionClass:string = 'pull-left';
+  @Input() public useInputSearch:boolean = false;
 
   @Input() public allowClear:boolean = false;
   @Input() public placeholder:string = '';
@@ -300,6 +301,10 @@ export class SelectComponent implements OnInit {
   private _items:Array<any> = [];
   private _disabled:boolean = false;
   private _active:Array<any> = [];
+
+  private showSearchInput():boolean {
+    return this.inputMode && this.useInputSearch;
+  }
 
   public constructor(element:ElementRef, private sanitizer:DomSanitizer) {
     this.element = element;
