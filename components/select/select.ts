@@ -111,7 +111,7 @@ let styles = `
      class="ui-select-container dropdown open">
     <div [ngClass]="{'ui-disabled': disabled}"></div>
     <div class="ui-select-match"
-         *ngIf="!inputMode">
+         *ngIf="!showSearchInput()">
       <span tabindex="-1"
           class="btn btn-default btn-secondary form-control ui-select-toggle"
           (click)="matchClick($event)"
@@ -132,7 +132,7 @@ let styles = `
            (keyup)="inputEvent($event, true)"
            [disabled]="disabled"
            class="form-control ui-select-search"
-           *ngIf="inputMode"
+           *ngIf="showSearchInput()"
            placeholder="{{active.length <= 0 ? placeholder : ''}}">
      <!-- options template -->
      <ul *ngIf="optionsOpened && options && options.length > 0 && !firstItemHasChildren"
@@ -243,6 +243,7 @@ export class SelectComponent implements OnInit {
   @Input() public idField:string = 'id';
   @Input() public textField:string = 'text';
   @Input() public multiple:boolean = false;
+  @Input() public useInputSearch:boolean = false;
 
   @Input()
   public set items(value:Array<any>) {
@@ -310,6 +311,10 @@ export class SelectComponent implements OnInit {
   private _items:Array<any> = [];
   private _disabled:boolean = false;
   private _active:Array<SelectItem> = [];
+
+  private showSearchInput():boolean {
+    return this.inputMode && this.useInputSearch;
+  }
 
   public constructor(element:ElementRef, private sanitizer:DomSanitizer) {
     this.element = element;
